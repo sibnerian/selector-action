@@ -16,15 +16,15 @@ export function reloadActiveItem(activeId) {
 }
 ```
 
-In this example, we have to pass in the active ID to our action _even though it’s actually available
-as part of the Redux state!_ This pollutes our React components with unnecessary props, and makes
-the actions themselves more complicated than they need to be. We could make this a little 
+In this example, we have to pass in the active ID to the action creator, even though it’s actually
+part of the Redux state. This pollutes our React components with unnecessary props, and makes
+the action creators more complicated than they need to be. We could make it a little 
 nicer with [`redux-thunk`](https://github.com/gaearon/redux-thunk):
 
 ```js
 export function reloadActiveItem() {
+    // We can access the current state by returning a thunk.
   return (dispatch, getState) => {
-    // Clever clever! We can access the current state by returning a thunk.
     const state = getState();
     const activeId = activeIdSelector(state);
     // Now we just have to dispatch the action...
@@ -36,16 +36,18 @@ export function reloadActiveItem() {
 }
 ```
 
-This is already a lot better! However, if you do this enough times, you'll notice that there's a lot
-of boilerplate here. There's even more boilerplate when you’re testing this action creator: you need
-to mock `getState` so that your selectors return the right values, then spy on `dispatch` to make
-sure that the right action is being dispatched.
+This is already a lot better. However, you'll notice that there's a lot of boilerplate. We have to
+get the state, call selectors on it, and then `dispatch` the resulting action. If we wanted to test
+this action creator, there's even more boilerplate. We'd have to mock `getState` so that the
+selectors return the right values, then spy on the `dispatch` function to assert that the correct
+action was dispatched.
 
 ## Using `selector-action`
 
 Let's simplify this contrived example by using `selectorAction`. Instead of doing the dispatching
-and the action-creating ourselves, we’ll pass in a the selector and an action creator that uses
-the selector's results.
+and the action-creating ourselves, we’ll pass in a selector and an action creator function that uses
+the selector's results. The end result is a `reloadActiveItem` function that's exactly equivalent
+to the previous example.
 
 ```js
 import selectorAction from 'selector-action';
@@ -63,7 +65,7 @@ export const reloadActiveItem = selectorAction(
 
 As you can see, this looks a lot like the syntax of [Reselect](https://github.com/reactjs/reselect).
 You pass in one or more selectors, then an action creator that takes the selectors’ return values as
-its arguments. The result of the action creator function is what's dispatched.
+its arguments. The result of this action creator function is what's dispatched.
 
 To make testing easier, `selectorAction` exposes the original action creator as an
 `originalActionCreator` property of the generated function. This allows for testing the
@@ -118,8 +120,7 @@ export const awesomeAction = selectorAction([
 You may run across a case where an action creator needs a mix of selector results and
 regular arguments to compute an action. For instance, let’s say that the user has entered a new name
 for the current active item. Your reducer will need both the new name AND the active item’s ID
-to compute a new state. Using `selectorAction`, you can create an action like this using a
-higher-order function:
+to compute a new state. This can be done by wrapping `selectorAction` in a higher-order function.
 
 ```js
 export function setActiveItemName(newName) {
@@ -130,9 +131,10 @@ export function setActiveItemName(newName) {
 }
 ```
 
-This works because `selectorAction` normally returns a generated action creator that takes no
-arguments. However, if it is called with `dispatch` and `getState` as args, then it will return
-a _thunk action_ instead.
+`selectorAction` normally returns a generated action creator that takes no arguments.
+However, if it is called with `dispatch` and `getState` as args, then it will return
+a _thunk action_ instead. That's why this example works without having to call the result of
+`selectorAction` as a function.
 
 ## License
 
