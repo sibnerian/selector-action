@@ -1,4 +1,4 @@
-# State-aware actions with [reselect](https://github.com/reactjs/reselect) syntax
+# State-aware actions with reselect syntax
 
 **selector-action** greatly simplifies a common Redux pattern: actions whose values depend on the
 current Redux state. This is especially common with async actions, for example, when reloading some
@@ -59,9 +59,9 @@ export const reloadActiveItem = selectorAction(
 );
 ```
 
-As you can see, this looks a lot like the syntax of Reselect. You pass in one or more selectors,
-then an action creator that takes the selectors’ return values as its arguments. The result of the
-action creator function is what's dispatched.
+As you can see, this looks a lot like the syntax of [Reselect](https://github.com/reactjs/reselect).
+You pass in one or more selectors, then an action creator that takes the selectors’ return values as
+its arguments. The result of the action creator function is what's dispatched.
 
 To make testing easier, `selectorAction` exposes the original action creator as an
 `originalActionCreator` property of the generated function. This allows for testing the
