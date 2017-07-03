@@ -1,7 +1,7 @@
 {
   "name": "selector-action",
   "version": "1.0.0",
-  "description": "Simplify Redux actions that depend on the state.",
+  "description": "State-aware Redux actions with Reselect syntax.",
   "main": "build/selectorAction.js",
   "scripts": {
     "pretest": "npm run --silent lint && npm run build",

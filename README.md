@@ -1,4 +1,4 @@
-# State-aware actions with reselect syntax
+# State-aware Redux actions with Reselect syntax
 
 **selector-action** greatly simplifies a common Redux pattern: actions whose values depend on the
 current Redux state. This is especially common with async actions, for example, when reloading some
