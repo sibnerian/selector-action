@@ -1,0 +1,46 @@
+{
+  "name": "selector-action",
+  "version": "1.0.0",
+  "description": "Simplify Redux actions that depend on the state.",
+  "main": "build/selectorAction.js",
+  "scripts": {
+    "pretest": "npm run --silent lint && npm run build",
+    "test": "npm run tests-only",
+    "tests-only": "mocha",
+    "lint": "eslint .",
+    "build": "mkdirp build && babel src --out-dir build --source-maps",
+    "prepublish": "npm run build",
+    "clean": "rimraf build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/airbnb/selector-action.git"
+  },
+  "keywords": [
+    "redux",
+    "react",
+    "selector",
+    "action"
+  ],
+  "author": "Ian Sibner <sibnerian@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/airbnb/selector-action/issues"
+  },
+  "homepage": "https://github.com/airbnb/selector-action#readme",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-airbnb": "^2.1.1",
+    "babel-register": "^6.18.0",
+    "chai": "^3.5.0",
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "mkdirp": "^0.5.1",
+    "mocha": "^3.2.0",
+    "rimraf": "^2.5.4",
+    "sinon": "^2.3.6",
+    "sinon-chai": "^2.11.0"
+  },
+  "dependencies": {}
+}
