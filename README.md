@@ -1,5 +1,7 @@
 # State-aware Redux actions with Reselect syntax
 
+[![Build Status](https://travis-ci.org/sibnerian/selector-action.svg?branch=master)](https://travis-ci.org/sibnerian/selector-action) [![Coverage Status](https://coveralls.io/repos/github/sibnerian/selector-action/badge.svg?branch=master)](https://coveralls.io/github/sibnerian/selector-action?branch=master) [![npm version](https://badge.fury.io/js/selector-action.svg)](https://badge.fury.io/js/selector-action)
+
 **selector-action** greatly simplifies a common Redux pattern: actions whose values depend on the
 current Redux state. This is especially common with async actions, for example, when reloading some
 data with an API call:
