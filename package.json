@@ -1,6 +1,6 @@
 {
   "name": "selector-action",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "State-aware Redux actions with Reselect syntax.",
   "main": "build/selectorAction.js",
   "scripts": {
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/airbnb/selector-action.git"
+    "url": "git://github.com/sibnerian/selector-action.git"
   },
   "keywords": [
     "redux",
@@ -27,9 +27,9 @@
   "author": "Ian Sibner <sibnerian@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/airbnb/selector-action/issues"
+    "url": "https://github.com/sibnerian/selector-action/issues"
   },
-  "homepage": "https://github.com/airbnb/selector-action#readme",
+  "homepage": "https://github.com/sibnerian/selector-action#readme",
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-plugin-istanbul": "^4.1.4",
