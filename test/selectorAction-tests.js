@@ -1,8 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-// eslint-disable-next-line import/no-unresolved, import/extensions
-import selectorAction from '../build/selectorAction';
+import selectorAction from '../src/selectorAction';
 
 chai.use(sinonChai);
 const expect = chai.expect;

@@ -1,0 +1,15 @@
+{
+  "sourceMap": false,
+  "instrument": false,
+  "extension": [".js"],
+  "require": ["babel-register"],
+    "reporter": [
+    "text",
+    "lcov"
+  ],
+  "all": true,
+  "check-coverage": true,
+  "include": [
+    "src"
+  ]
+}
