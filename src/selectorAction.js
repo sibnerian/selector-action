@@ -19,7 +19,7 @@ function selectorAction(...args) {
       const appliedSelectors = selectors.map(selector => selector(state));
       return dispatch(actionCreator(...appliedSelectors, state));
     };
-    // If this actin creator is called as a thunk, we can dispatch directly.
+    // If this action creator is called as a thunk, we can dispatch directly.
     if (dispatchArg && getStateArg) {
       return action(dispatchArg, getStateArg);
     }
