@@ -1,6 +1,6 @@
 {
   "name": "selector-action",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "State-aware Redux actions with Reselect syntax.",
   "main": "build/selectorAction.js",
   "scripts": {
@@ -10,9 +10,10 @@
     "tests-only": "mocha",
     "test": "npm run tests-only",
     "lint": "eslint .",
-    "build": "mkdirp build && babel src --out-dir build --source-maps",
+    "build": "mkdirp build && babel src --out-dir build --source-maps && npm run build:middleware",
+    "build:middleware": "babel src/middleware.js --out-file middleware.js --source-maps",
     "prepublish": "npm run build",
-    "clean": "rimraf build && rimraf coverage"
+    "clean": "rimraf build && rimraf coverage && rimraf middleware.js{,.map}"
   },
   "repository": {
     "type": "git",

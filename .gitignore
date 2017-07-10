@@ -38,3 +38,6 @@ jspm_packages
 
 # Build directory
 build
+
+# Middleware build files
+middleware.js*
