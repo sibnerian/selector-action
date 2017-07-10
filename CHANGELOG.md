@@ -1,3 +1,7 @@
+1.1.0 / 2017-07-10
+==================
+  * Add middleware that can be used instead of `redux-thunk` if desired
+
 1.0.2 / 2017-07-02
 ==================
   * Fix typos in package.json

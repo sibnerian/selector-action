@@ -14,11 +14,12 @@ function selectorAction(...args) {
     if (typeof selector !== 'function') throw new Error('Selectors must be functions');
   });
   const generatedActionCreator = function generatedActionCreator(dispatchArg, getStateArg) {
-    const action = (dispatch, getState) => {
+    const action = function internalGeneratedSelectorAction(dispatch, getState) {
       const state = getState();
       const appliedSelectors = selectors.map(selector => selector(state));
       return dispatch(actionCreator(...appliedSelectors, state));
     };
+    action.IS_SELECTOR_ACTION = true;
     // If this action creator is called as a thunk, we can dispatch directly.
     if (dispatchArg && getStateArg) {
       return action(dispatchArg, getStateArg);
@@ -28,6 +29,7 @@ function selectorAction(...args) {
   };
   // expose the original action creator for testing
   generatedActionCreator.originalActionCreator = actionCreator;
+  generatedActionCreator.IS_SELECTOR_ACTION = true;
   return generatedActionCreator;
 }
 
