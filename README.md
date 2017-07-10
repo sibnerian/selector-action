@@ -81,9 +81,31 @@ describe('reloadActiveItem', () => {
 });
 ```
 
-Note: Behind the scenes, `selectorAction` relies on `redux-thunk` to access the store’s `dispatch`
-and `getState` functions . This means you still need to use `redux-thunk` as a middleware when using
-this library.
+## middleware
+
+If you're already using [`redux-thunk`](https://github.com/gaearon/redux-thunk), you don't need to
+do anything to start using `selectorAction` - it’s fully compatible with the thunk middleware.
+
+If you don’t _want_ to use `redux-thunk` (and there are some
+[good](https://twitter.com/intelligibabble/status/800103510624727040)
+[reasons](http://blog.isquaredsoftware.com/2017/01/idiomatic-redux-thoughts-on-thunks-sagas-abstraction-and-reusability/)
+to not want to
+), then `selector-action` provides a middleware for you to use instead:
+
+```js
+import { createStore, applyMiddleware } from 'redux';
+import selectorActionMiddleware from 'selector-action/middleware';
+import rootReducer from './reducers/index';
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(selectorActionMiddleware),
+);
+```
+
+`selector-action`'s middleware only runs when `selectorAction`s are dispatched. Similar to
+`redux-thunk`, it plays nice with other common middlewares like
+[`redux-pack`](https://github.com/lelandrichardson/redux-pack).
 
 ## Other features
 
@@ -115,7 +137,7 @@ export const awesomeAction = selectorAction([
 ], (foo, bar) => ({ type: 'AWESOME!', payload: { foo, bar } }));
 ```
 
-#### Using `selectorAction` as a thunk
+#### Using `selectorAction` with other action arguments
 
 You may run across a case where an action creator needs a mix of selector results and
 regular arguments to compute an action. For instance, let’s say that the user has entered a new name
@@ -130,11 +152,6 @@ export function setActiveItemName(newName) {
   }));
 }
 ```
-
-`selectorAction` normally returns a generated action creator that takes no arguments.
-However, if it is called with `dispatch` and `getState` as args, then it will return
-a _thunk action_ instead. That's why this example works without having to call the result of
-`selectorAction` as a function.
 
 ## License
 
