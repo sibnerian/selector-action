@@ -2,9 +2,27 @@
 
 [![Build Status](https://travis-ci.org/sibnerian/selector-action.svg?branch=master)](https://travis-ci.org/sibnerian/selector-action) [![Coverage Status](https://coveralls.io/repos/github/sibnerian/selector-action/badge.svg?branch=master)](https://coveralls.io/github/sibnerian/selector-action?branch=master) [![npm version](https://badge.fury.io/js/selector-action.svg?branch=master)](https://badge.fury.io/js/selector-action)
 
-**selector-action** greatly simplifies a common Redux pattern: actions whose values depend on the
-current Redux state. This is especially common with async actions, for example, when reloading some
-data with an API call:
+### Basic Usage
+
+```js
+import selectorAction from 'selector-action';
+
+// ...
+
+export const reloadActiveItem = selectorAction(
+  activeIdSelector,
+  activeId => ({
+    type: 'RELOAD_ACTIVE_ITEM',
+    promise: fetch(`//website.com/items/${activeId}`),
+  }),
+);
+```
+
+### Background
+
+
+**selector-action** simplifies a common Redux pattern: actions that depend on the
+current Redux state. For example, when you're reloading an "active" item's data with an API call:
 
 ```js
 // The active ID is in the Redux state, but we need it to make our API call. Sad!
@@ -16,10 +34,9 @@ export function reloadActiveItem(activeId) {
 }
 ```
 
-In this example, we have to pass in the active ID to the action creator, even though it’s actually
-part of the Redux state. This pollutes our React components with unnecessary props, and makes
-the action creators more complicated than they need to be. We could make it a little 
-nicer with [`redux-thunk`](https://github.com/gaearon/redux-thunk):
+In this example, we have to pass `activeId` to the action creator, even though it’s actually
+part of the Redux state! This pollutes our React components with unnecessary props, and makes
+the action creators more complicated than they need to be. We could try using [`redux-thunk`](https://github.com/gaearon/redux-thunk) to eliminat the argument, but that adds a lot of boilerplate:
 
 ```js
 export function reloadActiveItem() {
@@ -36,15 +53,13 @@ export function reloadActiveItem() {
 }
 ```
 
-This is already a lot better. However, you'll notice that there's a lot of boilerplate. We have to
-get the state, call selectors on it, and then `dispatch` the resulting action. If we wanted to test
-this action creator, there's even more boilerplate. We'd have to mock `getState` so that the
-selectors return the right values, then spy on the `dispatch` function to assert that the correct
-action was dispatched.
+We have to get the state, call selectors on it, and finally `dispatch` the resulting action.
+And if we wanted to test this action creator, there's even _more_ boilerplate - we'd have to mock
+`getState`, then spy on the `dispatch` function...it's not pretty.
 
 ## Using `selector-action`
 
-Let's simplify this contrived example by using `selectorAction`. Instead of doing the dispatching
+`selectorAction` makes this pattern a breeze. Instead of doing the dispatching
 and the action-creating ourselves, we’ll pass in a selector and an action creator function that uses
 the selector's results. The end result is a `reloadActiveItem` function that's exactly equivalent
 to the previous example.
@@ -67,7 +82,9 @@ As you can see, this looks a lot like the syntax of [Reselect](https://github.co
 You pass in one or more selectors, then an action creator that takes the selectors’ return values as
 its arguments. The result of this action creator function is what's dispatched.
 
-To make testing easier, `selectorAction` exposes the original action creator as an
+### Testing
+
+`selectorAction` exposes the original action creator as an
 `originalActionCreator` property of the generated function. This allows for testing the
 underlying action creator without using a fake state or stubbing `dispatch`.
 
@@ -107,7 +124,7 @@ const store = createStore(
 `redux-thunk`, it plays nice with other common middlewares like
 [`redux-pack`](https://github.com/lelandrichardson/redux-pack).
 
-## Other features
+### Advanced features
 
 #### `state` as an argument
 
@@ -128,7 +145,7 @@ export const reloadActiveItem = selectorAction((state) => {
 #### Arrays of selectors
 
 Like Reselect, you can pass in an array of selectors instead of passing them as separate arguments.
-Here is an even more contrived example demonstrating this fact.
+Here is a contrived example demonstrating this feature.
 
 ```js
 export const awesomeAction = selectorAction([
@@ -137,9 +154,9 @@ export const awesomeAction = selectorAction([
 ], (foo, bar) => ({ type: 'AWESOME!', payload: { foo, bar } }));
 ```
 
-#### Using `selectorAction` with other action arguments
+#### `selectorAction` with arguments
 
-You may run across a case where an action creator needs a mix of selector results and
+You'll probably run across a case where an action creator needs a _mix_ of selector results and
 regular arguments to compute an action. For instance, let’s say that the user has entered a new name
 for the current active item. Your reducer will need both the new name AND the active item’s ID
 to compute a new state. This can be done by wrapping `selectorAction` in a higher-order function.
