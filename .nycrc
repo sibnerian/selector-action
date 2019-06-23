@@ -2,7 +2,7 @@
   "sourceMap": false,
   "instrument": false,
   "extension": [".js"],
-  "require": ["babel-register"],
+  "require": ["@babel/register"],
     "reporter": [
     "text",
     "lcov"
