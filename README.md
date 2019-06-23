@@ -11,7 +11,7 @@ import selectorAction from 'selector-action';
 
 export const reloadActiveItem = selectorAction(
   activeIdSelector,
-  activeId => ({
+  (activeId) => ({
     type: 'RELOAD_ACTIVE_ITEM',
     promise: fetch(`//website.com/items/${activeId}`),
   }),
@@ -19,7 +19,6 @@ export const reloadActiveItem = selectorAction(
 ```
 
 ### Background
-
 
 **selector-action** simplifies a common Redux pattern: actions that depend on the
 current Redux state. For example, when you're reloading an "active" item's data with an API call:
@@ -40,7 +39,7 @@ the action creators more complicated than they need to be. We could try using [`
 
 ```js
 export function reloadActiveItem() {
-    // We can access the current state by returning a thunk.
+  // We can access the current state by returning a thunk.
   return (dispatch, getState) => {
     const state = getState();
     const activeId = activeIdSelector(state);
@@ -71,7 +70,7 @@ import selectorAction from 'selector-action';
 
 export const reloadActiveItem = selectorAction(
   activeIdSelector,
-  activeId => ({
+  (activeId) => ({
     type: 'RELOAD_ACTIVE_ITEM',
     promise: fetch(`//website.com/items/${activeId}`),
   }),
@@ -148,10 +147,10 @@ Like Reselect, you can pass in an array of selectors instead of passing them as 
 Here is a contrived example demonstrating this feature.
 
 ```js
-export const awesomeAction = selectorAction([
-  fooSelector,
-  barSelector,
-], (foo, bar) => ({ type: 'AWESOME!', payload: { foo, bar } }));
+export const awesomeAction = selectorAction(
+  [fooSelector, barSelector],
+  (foo, bar) => ({ type: 'AWESOME!', payload: { foo, bar } }),
+);
 ```
 
 #### `selectorAction` with arguments
@@ -163,7 +162,7 @@ to compute a new state. This can be done by wrapping `selectorAction` in a highe
 
 ```js
 export function setActiveItemName(newName) {
-  return selectorAction(activeIdSelector, activeId => ({
+  return selectorAction(activeIdSelector, (activeId) => ({
     type: 'SET_ITEM_NAME',
     payload: { activeId, newName },
   }));

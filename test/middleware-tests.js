@@ -5,7 +5,10 @@ import selectorAction from '../src/selectorAction';
 describe('custom thunk middleware', () => {
   const doDispatch = () => {};
   const doGetState = () => {};
-  const nextHandler = thunkMiddleware({ dispatch: doDispatch, getState: doGetState });
+  const nextHandler = thunkMiddleware({
+    dispatch: doDispatch,
+    getState: doGetState,
+  });
 
   it('must return a function to handle next', () => {
     chai.assert.isFunction(nextHandler);
@@ -93,8 +96,10 @@ describe('custom thunk middleware', () => {
       it('works with selectorAction', () => {
         // selectorAction will dispatch once internally before finally calculating the action
         // so we use the identity function to assert that the right thing got returned eventually
-        const nextHandlerWithIdentityDispatch =
-          thunkMiddleware({ dispatch: x => x, getState: doGetState });
+        const nextHandlerWithIdentityDispatch = thunkMiddleware({
+          dispatch: (x) => x,
+          getState: doGetState,
+        });
         const expected = 'rocks';
         const actionHandler = nextHandlerWithIdentityDispatch();
         const action = selectorAction(() => expected);
